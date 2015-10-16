@@ -121,10 +121,14 @@ class PluginStore(object):
                     except:
                         raise
                     else:
-                        self._plugins[plugin_info.name] = plugin_info
-                        self._logger.debug("Found valid plugin: %s %s",
-                                           plugin_info.name,
-                                           plugin_info.version)
+                        if plugin_info.name in self._plugins:
+                            self._logger.warning("Duplicate plugin: %s",
+                                                 plugin_info.name)
+                        else:
+                            self._plugins[plugin_info.name] = plugin_info
+                            self._logger.debug("Found valid plugin: %s %s",
+                                               plugin_info.name,
+                                               plugin_info.version)
 
     def parse_plugin(self, plugin_directory):
         info_file = os.path.join(plugin_directory, self._info_fname)
